@@ -42,5 +42,3 @@ test/*.gltf
 PUBLISH_CHECKLIST.md
 model/
 
-
-git@github.com:yaderick/fbx2glb.git
