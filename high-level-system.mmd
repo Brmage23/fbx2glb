@@ -5,33 +5,32 @@ graph TD
 
     subgraph Core_Application [fbx2glb Core]
         Main[bin/main.js Entry Point]
-        Cmd[Commander.js Parser]
-        Conv[lib/converter.js]
+        Cmd["Commander.js CLI Parser"]
+        Processor["lib/ Core Logic (converter.js)"]
     end
 
     subgraph Processing_Engine [Processing & Optimization]
-        G_Core[@gltf-transform/core]
-        G_Func[@gltf-transform/functions]
-        Comp[lib/compressor.js]
-        Res[lib/resizer.js]
+        G_Core["@gltf-transform/core"]
+        G_Func["@gltf-transform/functions"]
+        Draco[Draco3D Compression]
+        Sharp[Sharp Image Processing]
     end
 
     subgraph Filesystem [Filesystem]
         FBX[(Input .fbx)]
-        GLB[(Output .glb)]
+        GLB[(Output .glb / .gltf)]
     end
 
-    %% Flow
+    %% Relationships
     CLI --> Main
     Main --> Cmd
-    Cmd --> Conv
-    Conv --> FBX
-    Conv --> G_Core
-    Conv --> G_Func
-    G_Func --> Comp
-    G_Func --> Res
-    Comp --> GLB
-    Res --> GLB
+    Cmd --> Processor
+    Processor --> FBX
+    Processor --> G_Core
+    Processor --> G_Func
+    G_Func --> Draco
+    G_Func --> Sharp
+    Processor --> GLB
 
     style Core_Application fill:#f9f,stroke:#333,stroke-width:2px
     style Processing_Engine fill:#bbf,stroke:#333,stroke-width:2px
